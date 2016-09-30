@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+    <style>
+    ul,
+    p,
+    input {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    img {
+        width: 400px;
+        vertical-align: top;
+    }
+    
+    #box {
+        width: 400px;
+        height: 225px;
+        position: relative;
+        border: 10px solid #000;
+        margin: 30px auto;
+        overflow: hidden;
+    }
+    
+    #picList {
+        width: 10000%;
+        position: absolute;
+        top: 0;
+        left: 0px;
+    }
+    
+    .picList li {
+        float: left;
+        position: relative;
+    }
+    
+    .picList .mask {
+        width: 100%;
+        height: 40px;
+        position: absolute;
+        left: 0;
+        bottom: -41px;
+        background: rgba(0, 0, 0, 0.5);
+        text-align: center;
+        color: #fff;
+        font-size: 20px;
+        text-align: center;
+        overflow: hidden;
+    }
+    
+    #btns a {
+        display: inline-block;
+        vertical-align: top;
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        color: #f60;
+        border-radius: 50%;
+        font: 12px/20px Arial;
+        text-align: center;
+        text-decoration: none;
+        position: relative;
+    }
+    
+    #btns a span {
+        width: 100px;
+        height: 50px;
+        position: absolute;
+        top: -75px;
+        left: -50px;
+        padding: 10px;
+        background-color: #fff;
+        display: none;
+    }
+    
+    #btns a span img {
+        width: 100px;
+        height: 50px;
+        vertical-align: middle;
+    }
+    
+    #btns a .show {
+        display: block;
+    }
+    
+    #btns .active {
+        background: #f60;
+        color: #fff;
+    }
+    
+    #box input {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        border: none;
+        background: rgba(0, 0, 0, 0.5);
+        font-size: 20px;
+        color: #fff;
+        font-family: "宋体";
+        top: calc(50% - 20px);
+        outline: none;
+        border-radius: 0 5px 5px 0;
+        font-weight: bold;
+    }
+    
+    #box input:nth-of-type(2) {
+        right: 0;
+        border-radius: 5px 0 0 5px;
+    }
+    
+    #box input:hover {
+        background: #fff;
+        color: #000;
+        box-shadow: 0 0 10px #000;
+    }
+    </style>
+    <script src="tools.js"></script>
+    <script src="MTween.js"></script>
+    <script>
+    window.onload = function(){
+        var list = $("#picList");
+        var allLi = $("li",list);
+        var allP = $("p",list);
+        var oneLiW = parseInt( getStyle(allLi[0],"width") );
+        var n = 0;
+        fn();
+        function fn(){
+             setTimeout(function (){
+                //p标签先隐藏
+                MTween(allP[n],"bottom",500,-40,"linear",function (){
+                  //控制下一张图片的运动，ul的left的值变化
+                   n++;
+                   MTween(list,"left",500,-n*oneLiW,"linear",function (){
+
+                        MTween(allP[n],"bottom",500,0,"linear",function (){
+                            if( n === allP.length-1 ){
+                                list.style.left = 0;
+                                allP[0].style.bottom = 0;
+                                allP[allP.length-1].style.bottom = "-40px";
+                                n = 0;
+                            }
+                            //当p标签上去之后，等待1秒钟之后，进入下一次
+                            fn();
+                        })      
+                   })     
+                })  
+            },1000)   
+        }
+
+        
+
+    };
+    </script>
+</head>
+
+<body>
+    <div id="box">
+        <ul id="picList" class="picList">
+            <li>
+                <img src="img/1.jpg" />
+                <p style="bottom:0px;" class="mask">1</p>
+            </li>
+            <li>
+                <img src="img/2.jpg" />
+                <p class="mask">2</p>
+            </li>
+            <!-- <li>
+                <img src="img/3.jpg" />
+                <p class="mask">3</p>
+            </li>
+             <li>
+                <img src="img/4.jpg" />
+                <p class="mask">4</p>
+            </li> -->
+            <li>
+                <img src="img/1.jpg" />
+                <p class="mask">1</p>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>
